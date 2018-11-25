@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://hbello.info:3001';
+//const BASE_URL = 'http://hbello.info:3001';
+const BASE_URL = 'https://scraper-logger-back.herokuapp.com/';
 
 const dbExecutionFotocasa = "state-execution-airbnb-scraping"
 
