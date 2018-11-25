@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const BASE_URL = 'http://hbello.info:3001';
-const BASE_URL = 'https://scraper-logger-back.herokuapp.com/';
+const BASE_URL = 'https://scraper-logger-back.herokuapp.com';
 
 const dbSummariesFotocasa = "summaries-fotocasa-scraping"
 
@@ -13,7 +13,7 @@ const getSummary = (entryName) => {
     //return axios.get(url).then(response => response.data);
 }
 
-///summaries/summaries-fotocasa-scraping/skip=0&limit=2
+///summaries/summaries-fotocasa-scraping/?skip=0&limit=2
 const getSummaries = (dbName, limit, skip) => {
     const url = `${BASE_URL}/summaries/${dbName}?skip=${skip}&limit=${limit}`;
     //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
