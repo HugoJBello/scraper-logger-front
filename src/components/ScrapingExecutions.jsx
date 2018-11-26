@@ -35,11 +35,11 @@ class ScrapingExecutions extends Component {
         return (<div>
             <br />
             <h2>Scraping executions</h2>
-            <div class="row">
-                <div class="form-inline col-sm-6 col-lg-3">
-                    <label for="sel1">Select database:</label>
-                    <select class="form-control" id="sel1" onChange={this.changeDbName}>
-                        {this.state.dbNames.map((dbName) => <option value={dbName}>{dbName}</option>)}
+            <div className="row">
+                <div className="form-inline col-sm-6 col-lg-3">
+                    <label htmlFor="sel1">Select database:</label>
+                    <select className="form-control" id="sel1" onChange={this.changeDbName}>
+                        {this.state.dbNames.map((dbName, index) => <option key={index} value={dbName}>{dbName}</option>)}
                     </select>
                 </div>
             </div>
@@ -60,7 +60,7 @@ class ScrapingExecutions extends Component {
         return (<div>{isActive && <FontAwesomeIcon icon="stroopwafel"></FontAwesomeIcon>}</div>);
     }
     executionTable = () => {
-        return (<div className="table-responsive table-big table-hover">
+        return (<div className="table-responsive table-big">
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -74,7 +74,7 @@ class ScrapingExecutions extends Component {
                 <tbody>
                     {this.state.retrievedExec.map((execution, index) =>
                         <tr key={index}>
-                            <td scope="row"> <a onClick={this.selectScrapingId} name={index}>{execution.scrapingId}</a></td>
+                            <th scope="row"> <a onClick={this.selectScrapingId} name={index} className="cell-hover">{execution.scrapingId}</a></th>
                             <td className="big-cell">{execution.date}</td>
                             <td>{execution.lastNmun}</td>
                             <td>{execution.lastPart}</td>
@@ -99,7 +99,7 @@ class ScrapingExecutions extends Component {
         const dateNow = (new Date()).getTime();
         const dateDiff = dateNow - date
         const isActive = dateDiff < this.state.maxDateDiff;
-        return (<div>{isActive && <FontAwesomeIcon icon="stroopwafel"></FontAwesomeIcon>}</div>);
+        return (<div className="icon-active">{isActive && <FontAwesomeIcon icon="stroopwafel"></FontAwesomeIcon>}</div>);
     }
 
     onUpdateExecutionId = (execution) => {

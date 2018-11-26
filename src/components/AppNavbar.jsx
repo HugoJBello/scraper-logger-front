@@ -30,17 +30,15 @@ class AppNavbar extends React.Component {
                             <Link className="nav-link" to="/scraping-summaries">Scraping summaries</Link>
                         </li>
                     </ul>
-                    {this.props.executionId != "" &&
-                        <div className="nav-item my-sm-0">
-                            <div className="nav-link" >{this.getSelectedScrapingId()}</div>
-                        </div>
-                    }
+                    <div className="nav-item my-sm-0">
+                        <div className="nav-link" >{this.getSelectedScrapingId()}</div>
+                    </div>
                 </div>
             </nav>
         )
     }
     getSelectedScrapingId = () => {
-        if(this.props.executionId){
+        if (this.props.executionId) {
             return this.props.executionId.scrapingId
         } else {
             return ""
@@ -49,7 +47,7 @@ class AppNavbar extends React.Component {
 }
 
 AppNavbar.propTypes = {
-    executionId: PropTypes.string.isRequired
+    executionId: PropTypes.object.isRequired
 }
 
 
