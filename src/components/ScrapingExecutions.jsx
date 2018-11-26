@@ -60,7 +60,7 @@ class ScrapingExecutions extends Component {
         return (<div>{isActive && <FontAwesomeIcon icon="stroopwafel"></FontAwesomeIcon>}</div>);
     }
     executionTable = () => {
-        return (<div className="table-responsive table-big">
+        return (<div className="table-responsive table-big table-hover">
             <table className="table table-striped">
                 <thead>
                     <tr>
