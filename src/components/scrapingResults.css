@@ -4,3 +4,7 @@
     word-break: break-all;
 
 }
+
+.table-big{
+    overflow-y: hidden
+}
