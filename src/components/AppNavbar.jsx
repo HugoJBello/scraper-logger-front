@@ -39,7 +39,7 @@ class AppNavbar extends React.Component {
     }
     getSelectedScrapingId = () => {
         if (this.props.executionId) {
-            return this.props.executionId.scrapingId
+            return this.props.executionId.scraping_id
         } else {
             return ""
         }

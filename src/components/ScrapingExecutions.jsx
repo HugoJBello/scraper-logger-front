@@ -11,7 +11,6 @@ class ScrapingExecutions extends Component {
         this.state = {
             selectedDb: "state-execution-fotocasa-scraping",
             dbNames: ["state-execution-fotocasa-scraping", "state-execution-airbnb-scraping"],
-            //dbName: "state-execution-airbnb-scraping",
             limit: 100,
             skip: 0,
             order: -1,
@@ -23,7 +22,7 @@ class ScrapingExecutions extends Component {
     async componentDidMount() {
         const self = this;
         setInterval(async () => {
-            const retrievedExec = await getExecutions(self.state.selectedDb, self.state.limit, self.state.skip, self.state.order);
+            const retrievedExec = await getExecutions(self.state.limit, self.state.skip, self.state.order);
             this.setState({ retrievedExec })
             //this.onUpdateExecutionId(retrievedExec[0]);
             console.log(self.state);
@@ -52,13 +51,6 @@ class ScrapingExecutions extends Component {
         this.setState({ selectedDb: event.target.value });
     }
 
-    priceFormatter = (cell, row, enumObject, index) => {
-        const date = (new Date(cell)).getTime();
-        const dateNow = (new Date()).getTime();
-        const dateDiff = dateNow - date
-        const isActive = dateDiff < this.state.maxDateDiff;
-        return (<div>{isActive && <FontAwesomeIcon icon="stroopwafel"></FontAwesomeIcon>}</div>);
-    }
     executionTable = () => {
         return (<div className="table-responsive table-big">
             <table className="table table-striped">
@@ -66,18 +58,18 @@ class ScrapingExecutions extends Component {
                     <tr>
                         <th scope="col">id</th>
                         <th scope="col">date</th>
-                        <th scope="col">last city</th>
                         <th scope="col">last piece</th>
+                        <th scope="col">app</th>
                         <th scope="col">state</th>
                     </tr>
                 </thead>
                 <tbody>
                     {this.state.retrievedExec.map((execution, index) =>
                         <tr key={index}>
-                            <th scope="row"> <a onClick={this.selectScrapingId} name={index} className="cell-hover">{execution.scrapingId}</a></th>
-                            <td className="big-cell">{execution.date}</td>
-                            <td>{execution.lastNmun}</td>
-                            <td>{execution.lastPart}</td>
+                            <th scope="row"> <a onClick={this.selectScrapingId} name={index} className="cell-hover">{execution.scraping_id}</a></th>
+                            <td className="big-cell">{execution.date_scraped}</td>
+                            <td>{execution.last_piece}</td>
+                            <td>{execution.app_id}</td>
                             <td>{this.getActiveIcon(execution)}</td>
                         </tr>
                     )}
@@ -95,7 +87,7 @@ class ScrapingExecutions extends Component {
     }
 
     getActiveIcon = (execution) => {
-        const date = (new Date(execution.date)).getTime();
+        const date = (new Date(execution.date_scraped)).getTime();
         const dateNow = (new Date()).getTime();
         const dateDiff = dateNow - date
         const isActive = dateDiff < this.state.maxDateDiff;
