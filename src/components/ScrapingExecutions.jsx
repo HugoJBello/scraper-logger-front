@@ -34,15 +34,6 @@ class ScrapingExecutions extends Component {
         return (<div>
             <br />
             <h2>Scraping executions</h2>
-            <div className="row">
-                <div className="form-inline col-sm-6 col-lg-3">
-                    <label htmlFor="sel1">Select database:</label>
-                    <select className="form-control" id="sel1" onChange={this.changeDbName}>
-                        {this.state.dbNames.map((dbName, index) => <option key={index} value={dbName}>{dbName}</option>)}
-                    </select>
-                </div>
-            </div>
-
             <br />
             {this.executionTable()}
         </div>);
