@@ -14,7 +14,7 @@ class Roots extends Component {
             <div className="container">
                 <Route path="/scraping-executions" component={ScrapingExecutions} />
                 <Route path="/home" component={Home} />
-                <Route path="/scraping-summaries" component={ScrapingSummaries} />
+                <Route path="/scraping-summaries/:scraping_id" component={ScrapingSummaries} />
             </div>);
     }
 }

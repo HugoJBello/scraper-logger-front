@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './scrapingResults.css';
 import { connect } from 'react-redux';
 import { updateExecutionId, getExecutionId } from '../redux/actions';
+import { Link } from "react-router-dom";
 
 class ScrapingExecutions extends Component {
     constructor(props) {
@@ -15,18 +16,22 @@ class ScrapingExecutions extends Component {
             skip: 0,
             order: -1,
             maxDateDiff: 1000 * 60 * 20,
-            retrievedExec: []
+            retrievedExec: [],
+            timer: null
         }
     }
 
     async componentDidMount() {
         const self = this;
-        setInterval(async () => {
-            const retrievedExec = await getExecutions(self.state.limit, self.state.skip, self.state.order);
-            this.setState({ retrievedExec })
-            //this.onUpdateExecutionId(retrievedExec[0]);
-            console.log(self.state);
-        }, 1000);
+        this.setState({
+            timer: setInterval(async () => {
+                const retrievedExec = await getExecutions(self.state.limit, self.state.skip, self.state.order);
+                this.setState({ retrievedExec });
+
+                //this.onUpdateExecutionId(retrievedExec[0]);
+                console.log(self.state);
+            }, 1000)
+        })
 
     }
 
@@ -38,9 +43,7 @@ class ScrapingExecutions extends Component {
             {this.executionTable()}
         </div>);
     }
-    changeDbName = (event) => {
-        this.setState({ selectedDb: event.target.value });
-    }
+
 
     executionTable = () => {
         return (<div className="table-responsive table-big">
@@ -57,7 +60,7 @@ class ScrapingExecutions extends Component {
                 <tbody>
                     {this.state.retrievedExec.map((execution, index) =>
                         <tr key={index}>
-                            <th scope="row"> <a onClick={this.selectScrapingId} name={index} className="cell-hover">{execution.scraping_id}</a></th>
+                            <th scope="row"> <Link onClick={this.selectScrapingId} to={'/scraping-summaries/' + execution.scraping_id} name={index} className="cell-hover">{execution.scraping_id}</Link></th>
                             <td className="big-cell">{execution.date_scraped}</td>
                             <td>{execution.last_piece}</td>
                             <td>{execution.app_id}</td>
@@ -75,6 +78,8 @@ class ScrapingExecutions extends Component {
         console.log(event.target.name);
         const execution = this.state.retrievedExec[parseInt(event.target.name)];
         this.onUpdateExecutionId(execution);
+        this.setState({ timer: null })
+        clearInterval(this.state.timer);
     }
 
     getActiveIcon = (execution) => {
