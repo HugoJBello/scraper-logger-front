@@ -47,10 +47,49 @@ class ScrapingExecutions extends Component {
             <br />
             <h2>Scraping executions</h2>
             <br />
+            <br />
+            {this.progressTable()}
+            <br />
+            <br />
+            <br />
             {this.executionTable()}
         </div>);
     }
 
+    progressTable = () => {
+        const cols = [];
+        for (const device in this.state.statusExec) {
+            const col = {};
+            col["device_id"] = device;
+            col["scraped_pieces_percent"] = Math.round(this.state.statusExec[device]["scraped_pieces_percent"] * 10000) / 10000 + "%";
+            col["scraped_remaining"] = this.state.statusExec[device]["scraped_remaining"];
+            col["scraped_pieces"] = this.state.statusExec[device]["scraped_pieces"];
+            cols.push(col);
+        }
+        return (<div className="table-responsive table-small">
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">pieces completed</th>
+                        <th scope="col">pieces remaining</th>
+                        <th scope="col">percent completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {cols.map((col, index) =>
+                        <tr key={index}>
+                            <td className="big-cell">{col.device_id}</td>
+                            <td>{col.scraped_pieces}</td>
+                            <td className="big-cell">{col.scraped_remaining}</td>
+                            <th scope="row"> {col.scraped_pieces_percent}</th>
+                        </tr>
+                    )}
+
+                </tbody>
+            </table>
+        </div>);
+    }
 
     executionTable = () => {
         return (<div className="table-responsive table-big">

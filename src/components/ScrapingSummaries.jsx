@@ -40,10 +40,10 @@ class ScrapingSummaries extends Component {
 
     render() {
         return (<div>
-            {this.state.scrapedCities && <div class="form-inline col-sm-6 col-lg-3">
+            {this.state.scrapedCities && <div className="form-inline col-sm-6 col-lg-3">
                 <label htmlFor="sel1">Select city:</label>
                 <select className="form-control" id="sel1" onChange={this.changeCity}>
-                    {this.state.scrapedCities.map((city) => <option value={city}>{city}</option>)}
+                    {this.state.scrapedCities.map((city, index) => <option key={index} value={city}>{city}</option>)}
                 </select>
             </div>}
             {this.state.geoJson &&
