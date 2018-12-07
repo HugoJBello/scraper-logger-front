@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getExecutions } from './services/executionService';
+import { getExecutions, getScrapingRemainingAllDevices } from './services/executionService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './scrapingResults.css';
 import { connect } from 'react-redux';
@@ -10,13 +10,12 @@ class ScrapingExecutions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedDb: "state-execution-fotocasa-scraping",
-            dbNames: ["state-execution-fotocasa-scraping", "state-execution-airbnb-scraping"],
             limit: 100,
             skip: 0,
             order: -1,
             maxDateDiff: 1000 * 60 * 20,
             retrievedExec: [],
+            statusExec: {},
             timer: null
         }
     }
@@ -25,8 +24,16 @@ class ScrapingExecutions extends Component {
         const self = this;
         this.setState({
             timer: setInterval(async () => {
-                const retrievedExec = await getExecutions(self.state.limit, self.state.skip, self.state.order);
-                this.setState({ retrievedExec });
+                getExecutions(self.state.limit, self.state.skip, self.state.order).then((data) => {
+                    const retrievedExec = data;
+                    this.setState({ retrievedExec });
+                });
+
+                getScrapingRemainingAllDevices().then((data) => {
+                    const statusExec = data;
+                    this.setState({ statusExec });
+                });
+
 
                 //this.onUpdateExecutionId(retrievedExec[0]);
                 console.log(self.state);
