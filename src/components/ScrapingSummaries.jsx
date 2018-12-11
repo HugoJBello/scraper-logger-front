@@ -14,7 +14,7 @@ class ScrapingSummaries extends Component {
             limit: 1,
             skip: 0,
             scraping_id: props.match.params.scraping_id,
-            selectedCity: null,
+            selectedCity: "",
             styleOptions: [],
             selectedStyleOption: "",
             scrapedCities: null,
