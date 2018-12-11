@@ -15,6 +15,8 @@ class ScrapingSummaries extends Component {
             skip: 0,
             scraping_id: props.match.params.scraping_id,
             selectedCity: null,
+            styleOptions: [],
+            selectedStyleOption: "",
             scrapedCities: null,
             order: -1,
             maxDateDiff: 1000 * 60 * 20,
@@ -31,9 +33,24 @@ class ScrapingSummaries extends Component {
             this.setState({ scrapedCities: cities });
             if (cities[0]) {
                 await this.setResultsAndGeoJson(cities[0]);
+                this.setStyleOptions();
                 await this.generateMap()
             }
         }
+    }
+
+    setResultsAndGeoJson = async (city) => {
+        const geoJson = await getScrapingGeoJson(city, this.state.scraping_id);
+        const result = await getResults(city, this.state.scraping_id);
+
+        this.setState({ geoJson: geoJson });
+        this.setState({ result: result });
+    }
+
+    setStyleOptions = () => {
+        const sample = this.state.geoJson.features[0].properties;
+        const styleOptions = Object.keys(sample);
+        this.setState({ styleOptions });
     }
 
 
@@ -47,6 +64,14 @@ class ScrapingSummaries extends Component {
                     {this.state.scrapedCities.map((city, index) => <option key={index} value={city}>{city}</option>)}
                 </select>
             </div>}
+            <br></br>
+            {this.state.styleOptions && <div className="form-inline col-sm-6 col-lg-3">
+                <label htmlFor="sel1">option:</label>
+                <select className="form-control" id="sel1" onChange={this.changeOption} value={this.state.selectedStyleOption}>
+                    {this.state.styleOptions.map((option, index) => <option key={index} value={option}>{option}</option>)}
+                </select>
+            </div>}
+            <br></br>
             {this.state.geoJson &&
                 <div>
                     {this.state.map}
@@ -67,10 +92,18 @@ class ScrapingSummaries extends Component {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <GeoJSON data={this.state.geoJson} />
+                <GeoJSON data={this.state.geoJson} style={this.style} />
             </Map>
         );
         this.setState({ map });
+    }
+
+    style = (feature) => {
+        const option = this.state.selectedStyleOption;
+        return {
+            fillOpacity: feature.properties[option] * 0.8,
+            fillColor: "#ff0000"
+        }
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -84,13 +117,14 @@ class ScrapingSummaries extends Component {
 
     }
 
-    setResultsAndGeoJson = async (city) => {
-        const geoJson = await getScrapingGeoJson(city, this.state.scraping_id);
-        const result = await getResults(city, this.state.scraping_id);
+    changeOption = async (event) => {
+        const option = event.target.value;
+        this.setState({ selectedStyleOption: option });
+        await this.generateMap()
 
-        this.setState({ geoJson: geoJson });
-        this.setState({ result: result });
     }
+
+
 
 }
 
