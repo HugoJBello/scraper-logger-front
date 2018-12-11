@@ -140,6 +140,10 @@ class ScrapingExecutions extends Component {
         this.props.onUpdateExecutionId(execution);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.state.timer);
+    }
+
 }
 
 const mapStateToProps = state => ({
@@ -150,5 +154,6 @@ const mapActionsToProps = {
     onUpdateExecutionId: updateExecutionId,
     onGetExecutionId: getExecutionId,
 };
+
 
 export default connect(mapStateToProps, mapActionsToProps)(ScrapingExecutions);
