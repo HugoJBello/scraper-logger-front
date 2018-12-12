@@ -31,6 +31,10 @@ class App extends Component {
     );
   }
 
+  componentDidMount = () => {
+    document.title = "Scraper Logger";
+  }
+
 }
 
 export default App;

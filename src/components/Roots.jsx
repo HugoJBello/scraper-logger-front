@@ -12,8 +12,8 @@ class Roots extends Component {
     render() {
         return (
             <div className="container">
+                <Route path="/home" component={ScrapingExecutions} />
                 <Route path="/scraping-executions" component={ScrapingExecutions} />
-                <Route path="/home" component={Home} />
                 <Route path="/scraping-summaries/:scraping_id" component={ScrapingSummaries} />
             </div>);
     }

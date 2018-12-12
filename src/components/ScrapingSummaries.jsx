@@ -49,7 +49,12 @@ class ScrapingSummaries extends Component {
 
     setStyleOptions = () => {
         const sample = this.state.geoJson.features[0].properties;
-        const styleOptions = Object.keys(sample);
+        const styleOptions = [];
+        Object.keys(sample).map((key) => {
+            if (key.indexOf("normal") > -1) {
+                styleOptions.push(key);
+            }
+        });
         this.setState({ styleOptions });
     }
 
@@ -92,7 +97,7 @@ class ScrapingSummaries extends Component {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <GeoJSON data={this.state.geoJson} style={this.style} />
+                <GeoJSON key={JSON.stringify(this.state.geoJson)} data={this.state.geoJson} style={this.style} onEachFeature={this.onEachFeature} />
             </Map>
         );
         this.setState({ map });
@@ -103,6 +108,12 @@ class ScrapingSummaries extends Component {
         return {
             fillOpacity: feature.properties[option] * 0.8,
             fillColor: "#ff0000"
+        }
+    }
+
+    onEachFeature = (feature, layer) => {
+        if (feature.properties && feature.properties.name) {
+            layer.bindPopup(JSON.stringify(feature.properties));
         }
     }
 
