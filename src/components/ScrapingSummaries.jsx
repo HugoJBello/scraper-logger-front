@@ -55,13 +55,11 @@ class ScrapingSummaries extends Component {
                 styleOptions.push(key);
             }
         });
-        this.setState({ styleOptions });
+        this.setState({ styleOptions, selectedStyleOption: styleOptions[0] });
     }
 
 
     render() {
-        const position = [51.505, -0.09]
-
         return (<div>
             {this.state.scrapedCities && <div className="form-inline col-sm-6 col-lg-3">
                 <label htmlFor="sel1">Select city:</label>
@@ -88,9 +86,6 @@ class ScrapingSummaries extends Component {
     generateMap = () => {
         this.setState({ map: null });
         const position = [this.state.geoJson.features[0].bbox[1], this.state.geoJson.features[0].bbox[0]]
-        //const position = [40.505, -3.09]
-        console.log("------");
-        console.log(this.state.selectedCity);
         const map = (
             <Map center={position} className="map-geojson" zoom={13}>
                 <TileLayer
