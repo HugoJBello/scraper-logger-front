@@ -113,7 +113,7 @@ class ScrapingSummaries extends Component {
 
     onEachFeature = (feature, layer) => {
         if (feature.properties && feature.properties.name) {
-            layer.bindPopup(JSON.stringify(feature.properties));
+            layer.bindPopup(JSON.stringify(feature.properties).replace(new RegExp(",", 'g'), ",\n").replace(new RegExp("\"", 'g'), ""));
         }
     }
 
